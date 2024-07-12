@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Feedback</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+
+/* 
+        body {
+            background-image: url("https://st4.depositphotos.com/9485312/21468/i/450/depositphotos_214687252-stock-photo-customer-always-right-word-cloud.jpg");
+            background-blend-mode: multiply;
+            background-size: 1920px 920px; 
+            background-repeat: no-repeat;
+        } */
+
+        body {
+    background-blend-mode: multiply;
+    background-size: 1920px 920px; 
+    background-repeat: no-repeat;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), /* first layer */
+        linear-gradient(to right, rgba(255, 0, 0, 0.6), rgba(255, 0, 0, 0.6)), /* second layer */
+        linear-gradient(to bottom, rgba(0, 0, 255, 0.6), rgba(0, 0, 255, 0.6)); /* third layer */
+}
+
+
+/* 
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); 
+            z-index: -1;
+        }  */
+
+
+
+        .container {
+            max-width: 1200px; /* Limit container width */
+            margin-top: 50px; /* Adjusted margin-top */
+        }
+
+/* Set white background for all table rows */
+.table tbody tr {
+    background-color: #fff !important; 
+    color: #888; /* Lighter text color */
+    font-weight: normal; /* Normal font weight */
+    font-family: 'Comic Sans MS', cursive; /* Funky font family */
+}
+
+/* Table styling */
+.table th,
+.table td {
+    border-color: #ddd; /* Table border color */
+    font-size: 14px;
+    font-weight: bold; /* Bold font weight for table text */
+    color: #555; /* Table text color */
+}
+
+.table th {
+    background-color: #f5f5f5; /* Table header background color */
+    text-transform: uppercase;
+    font-family: 'Comic Sans MS', cursive; /* Funky font for column names */
+    color: #ff6b6b; /* Premium heading color */
+}
+
+.table th,
+.table td {
+    vertical-align: middle; /* Center align table content vertically */
+}
+
+
+/* Hover effect for table rows */
+.table tbody tr:hover {
+    background-color: #7f3f3f; /* Light gray background color on hover */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #f7f3f3; /* Change text color on hover */
+}
+
+
+
+
+        .header-funky {
+            font-family: 'Pacifico', cursive;
+            font-size: 36px;
+            color: #ff6b6b; /* Premium heading color */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .btn-funky {
+            background-color: #ff6b6b;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .btn-funky:hover {
+            background-color: #ff4757;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+            <a href="/landing_admin" class="navbar-brand text-warning">Feedbackify</a>
+            <button 
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navmenu"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>         
+            <div class="collapse navbar-collapse" id="navmenu">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="/landing_admin" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/contactus" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin" class="nav-link">Panel</a>
+                    </li>
+
+                    <div class="text-center mb-3">
+                        <a href="/export_excel" class="btn btn-funky">Export</a>
+                    </div>
+
+                    <li class="nav-item">
+                        <form action="/logout" method="post">
+                            <button type="submit" class="btn btn-outline-light btn-lg mx-2">Logout</button>
+                        </form>                    
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Navbar ends -->
+
+        <br>
+        <br>
+
+        <h2 class="header-funky">Public Feedback Classfication Data</h2>
+
+        <!-- <div class="text-center mb-3">
+            <a href="/export_excel" class="btn btn-funky">Export to Excel</a>
+        </div> -->
+
+        <div class="row">
+            <div class="col-md-12">
+             
+                <!-- Filter -->
+                <div class="form-group">
+                    <label for="filterSelect" style="font-family: 'Pacifico', cursive; color: #ff6b6b;">Filter by Label:</label>
+                    <select id="filterSelect" class="form-control" style="border-color: #ff6b6b;">
+                        <option value="" style="font-family: 'Comic Sans MS', cursive; color: #ff6b6b;">All</option> <!-- Default option to show all rows -->
+                        <!-- Add options dynamically based on available labels -->
+                        {% for label in unique_labels %}
+                            <option value="{{ label }}" style="font-family: 'Comic Sans MS', cursive; color: #ff6b6b;">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+                <!-- Feedback table -->
+                <table id="feedbackTable" class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase">User</th>
+                            <th class="text-uppercase">Feedback Message</th>
+                            <th class="text-uppercase">Category</th>
+                            <th class="text-uppercase">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for feedback in feedback_data %}
+                        <tr>
+                            <td>{{ feedback[1] }}</td>
+                            <td>{{ feedback[3] }}</td>
+                            <td>{{ feedback[4] }}</td>
+                            <td>{{ feedback[2] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS CDN -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        $(document).ready(function() {
+            // Function to filter table rows based on label value
+            function filterRowsByLabel(label) {
+                $('#feedbackTable tbody tr').each(function() {
+                    var rowLabel = $(this).find('td:eq(2)').text(); // Get label value from the third column
+                    if (label && rowLabel !== label) {
+                        $(this).hide(); // Hide rows that do not match the selected label
+                    } else {
+                        $(this).show(); // Show rows that match the selected label or show all if no label selected
+                    }
+                });
+            }
+
+            // Event listener for change in filter select
+            $('#filterSelect').change(function() {
+                var selectedLabel = $(this).val(); // Get the selected label value
+                filterRowsByLabel(selectedLabel); // Call the filter function
+            });
+        });
+    </script>
+
+</body>
+</html>

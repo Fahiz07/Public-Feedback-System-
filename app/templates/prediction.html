@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedbackify</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+
+            background-image: url("https://www.callcentrehelper.com/images/stories/2020/01/holding-star-760.jpg");
+            background-repeat: no-repeat;
+            background-size: 1950px 920px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            /* background-color: rgba(122, 70, 70, 0.9); */
+            /* background: linear-gradient(to right, #ff7e5f, #feb47b, #ffaf7b, #ffc1a6, #ffded7); */
+            background: linear-gradient(to right, #578fc6, #c47d9c, #ff7e5f, #ffe45f, #ffb74d);
+            /* background-color: black; */
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-family: 'Comic Sans MS', cursive, sans-serif; /* Fun and funky font */
+            color: #100f0f; /* Deep pink color for text */
+            font-size: 48px; /* Large font size */
+            font-weight: bold; /* Bold font weight */
+            text-align: center; /* Center alignment */
+            text-transform: uppercase; /* Uppercase letters for extra emphasis */
+            letter-spacing: 2px; /* Spacing between letters for a playful look */
+            margin-bottom: 20px; /* Bottom margin for spacing */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Text shadow for emphasis */
+        }
+
+
+    </style>
+</head>
+<body>
+    <navbar-expand-lg class="navbar navbar-expand-lg navbar-dark bg-dark py-3 fixed-top">
+        <div class="container font-monospace">
+            <a href="/home" class="navbar-brand" style="color: black; font: bold;"><h4>Feedbackify</h4></a>
+            
+            <button 
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navmenu"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>         
+            <div class="collapse navbar-collapse" id="navmenu">
+                <ul class="navbar-nav ms-auto">
+                    <!-- <li class="nav-item">
+                        <a href="/">
+                            <button class="btn btn-outline-light btn-lg mx-2">Home</button>
+                        </a> 
+                    </li> -->
+                    <li class="nav-item">
+                        <form action="/logout" method="post">
+                            <button type="submit" class="btn btn-outline-light btn-lg mx-2">Logout</button>
+                        </form>                    
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </navbar-expand-lg>
+
+
+
+    <div class="container">
+        <h1 class="text-center mb-4">Public Feedback Classfication</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="textArea">Enter your text here:</label>
+                <textarea class="form-control" id="textArea" name="text" rows="8" placeholder="Enter your text here..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        {% if x %}
+        <hr>
+        <h3 class="mt-4">Result:</h3>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Input Text:</h5>
+                <p class="card-text">{{ y }}</p>
+                <h5 class="card-title">Prediction:</h5>
+                <p class="card-text">{{ x }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
